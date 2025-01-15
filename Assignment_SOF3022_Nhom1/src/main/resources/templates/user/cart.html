@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giỏ Hàng</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" th:href="@{/user/images/favicon.ico}" type="image/x-icon">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{/user/css/bootstrap.min.css}">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" th:href="@{/user/css/style.css}">
+
+    <!-- Modernizr -->
+    <script th:src="@{/user/js/vendor/modernizr-3.5.0.min.js}"></script>
+</head>
+<body>
+    <!-- Main Wrapper -->
+    <div class="wrapper">
+        <!-- Header -->
+        <header th:replace="common/user/header :: header"></header>
+
+        <!-- Breadcrumb Area -->
+        <section class="breadcrumb-area bg-light py-3">
+            <div class="container">
+                <nav>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{/}">Trang Chủ</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Giỏ Hàng</li>
+                    </ol>
+                </nav>
+            </div>
+        </section>
+
+        <!-- Cart Main Area -->
+        <div class="container py-5">
+            <h2 class="text-center mb-4">Giỏ Hàng</h2>
+            <form>
+                <table class="table table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Ảnh</th>
+                            <th>Tên Sản Phẩm</th>
+                            <th>Đơn Giá</th>
+                            <th>Số Lượng</th>
+                            <th>Tổng Tiền</th>
+                            <th>Hành Động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="entry: ${#session.getAttribute('cart')}">
+                            <td>
+                                <img th:src="@{'/images/flags/'+${entry.value.productDTO.image}}" alt="product image" class="img-fluid" style="max-width: 80px;">
+                            </td>
+                            <td th:text="${entry.value.productDTO.name}"></td>
+                            <td th:text="${entry.value.productDTO.price}"></td>
+                            <td>
+                                <input type="number" class="form-control" th:value="${entry.value.qty}">
+                            </td>
+                            <td th:text="${entry.value.productDTO.price * entry.value.qty}"></td>
+                            <td>
+                                <a href="#" class="btn btn-danger btn-sm" th:onclick="'deleteCart(\'' + ${entry.key} + '\');'">
+                                    <i class="icon-trash icons"></i> Xóa
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" class="text-right font-weight-bold">Thành Tiền:</td>
+                            <td colspan="2" class="text-left" th:text="${session.total}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="text-right">
+                    <a th:href="@{/}" class="btn btn-secondary">Tiếp Tục Mua Sắm</a>
+                    <a th:href="@{/user/checkout}" class="btn btn-primary">Thanh Toán</a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Footer -->
+        <footer th:replace="common/user/footer :: footer"></footer>
+    </div>
+
+    <!-- Scripts -->
+    <script th:src="@{/user/js/vendor/jquery-3.2.1.min.js}"></script>
+    <script th:src="@{/user/js/bootstrap.min.js}"></script>
+    <script th:src="@{/user/js/main.js}"></script>
+</body>
+</html>
